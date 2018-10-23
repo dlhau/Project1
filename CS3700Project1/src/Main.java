@@ -18,6 +18,5 @@ public class Main
 			huffman.start();
 			
 		} catch(Exception e) { System.out.println("FILE NOT FOUND"); }
-		
 	}
 }

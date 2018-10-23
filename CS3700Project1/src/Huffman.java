@@ -132,7 +132,6 @@ public class Huffman implements Runnable
 			
 			Encoder fileEncoded = compress();
 
-			// Get compression percent
 			int compressedBytes = fileEncoded.getEncodedString().length();
 			System.out.printf("File Compression Percent: %.2f%n", (double) compressedBytes / fileBytes);
 			

@@ -45,14 +45,27 @@ public class Huffman implements Runnable
 	{
 		fileString = new String(Files.readAllBytes(Paths.get(filename)));
 		int[] freq = new int[ASCII];
+		char[] ch = fileString.toCharArray();
 		
-		for (char c : fileString.toCharArray())
+		int threads = 4;
+		ExecutorService executor = Executors.newFixedThreadPool(threads);
+		
+		int firstIndex = 0;
+		int threadDivision = (int) Math.ceil((double) fileString.length() / 4);
+		int lastIndex = threadDivision;
+		for (int i = 0; i < threadDivision; i++)
 		{
-			freq[c] = freq[c] + 1;
+			executor.execute(new Parse(firstIndex, lastIndex, ch, freq));
+			firstIndex = firstIndex + threadDivision;
+			lastIndex = firstIndex + threadDivision;
+		}
+		executor.shutdown();
+		while (!executor.isTerminated())
+		{
+			Thread.yield();
 		}
 		
 		int freqCount = 0;
-		
 		for (int i = 0; i < freq.length; i++)
 		{
 			freqCount = freq[i];

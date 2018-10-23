@@ -51,16 +51,16 @@ public class Huffman implements Runnable
 		int[] freq = new int[ASCII];
 		
 		char[] ch = fileString.toCharArray();
-		int startIndex = 0;
+		int firstIndex = 0;
 		int fileDivision = (int) Math.ceil((double) fileString.length() / 4);
 		
-		int finishIndex = fileDivision;
+		int lastIndex = fileDivision;
 		
 		for (int i = 0; i < threads; i++)
 		{
-			executorOne.execute(new Parse(startIndex, finishIndex, ch,freq));
-			startIndex = startIndex + fileDivision;
-			finishIndex = startIndex + fileDivision;
+			executorOne.execute(new Parse(firstIndex, lastIndex, ch,freq));
+			firstIndex = firstIndex + fileDivision;
+			lastIndex = firstIndex + fileDivision;
 		}
 		executorOne.shutdown();
 		
@@ -138,7 +138,7 @@ public class Huffman implements Runnable
 			threadResults[i] = new StringBuilder();
 		}
 		
-		int startingIndex = 0;
+		int firstIndex = 0;
 		int fileDivision = (int) Math.ceil((double) fileString.length() / threads);
 		
 		int lastIndex = fileDivision;
@@ -147,10 +147,10 @@ public class Huffman implements Runnable
 		
 		for (int i = 0; i < threads; i++)
 		{
-			executorTwo.execute(new Encode(threadResults[i], startingIndex,
+			executorTwo.execute(new Encode(threadResults[i], firstIndex,
 					lastIndex, fileString, charCodes));
-			startingIndex = startingIndex + fileDivision;
-			lastIndex = startingIndex + fileDivision;
+			firstIndex = firstIndex + fileDivision;
+			lastIndex = firstIndex + fileDivision;
 		}
 		
 		executorTwo.shutdown();

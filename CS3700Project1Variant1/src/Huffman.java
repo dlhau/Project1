@@ -122,7 +122,7 @@ public class Huffman implements Runnable
 			threadResults[i] = new StringBuilder();
 		}
 		
-		int startingIndex = 0;
+		int firstIndex = 0;
 		int fileDivision = (int) Math.ceil((double) fileString
 				.length() / threads);
 		
@@ -132,10 +132,10 @@ public class Huffman implements Runnable
 		
 		for (int i = 0; i < threads; i++)
 		{
-			executor.execute(new Encode(threadResults[i], startingIndex,
+			executor.execute(new Encode(threadResults[i], firstIndex,
 					lastIndex, fileString, charCodes));
-			startingIndex = startingIndex + fileDivision;
-			lastIndex = startingIndex + fileDivision;
+			firstIndex = firstIndex + fileDivision;
+			lastIndex = firstIndex + fileDivision;
 		}
 		
 		executor.shutdown();
@@ -161,11 +161,11 @@ public class Huffman implements Runnable
 		String data;
 		HashMap<Character, String> charCodes;
 
-		Encode(StringBuilder result, int startingIndex, int finishIndex,
+		Encode(StringBuilder result, int firstIndex, int finishIndex,
 				String data, HashMap<Character, String> charCodes)
 		{
 			this.result = result;
-			this.firstIndex = startingIndex;
+			this.firstIndex = firstIndex;
 			this.lastIndex = finishIndex;
 			this.data = data;
 			this.charCodes = charCodes;
